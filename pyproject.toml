@@ -1,6 +1,6 @@
 [project]
 name = "git-year"
-version = "0.1.2"
+version = "0.1.3"
 description = "A compact terminal heatmap showing one year of Git commits (like GitHub contributions, but with compact bars instead of squares, to fit into a smaller terminal window)"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -13,6 +13,9 @@ dependencies = []
 
 [project.scripts]
 git-year = "git_year.cli:main"
+
+[tool.setuptools]
+packages = ["git_year"]
 
 [build-system]
 requires = ["setuptools>=63", "wheel"]
