@@ -65,7 +65,7 @@ git-year --version
 - Python 3.8+
 - Git available in PATH
 - A terminal with ANSI color support (all modern terminals)
-- On legacy cmd.exe ANSI colors may fall back to monochrome.
+- On legacy cmd.exe ANSI colors may fall back to monochrome
 
 ---
 
@@ -79,9 +79,8 @@ Ideas, issues, and pull requests are appreciated.
 ## License
 
 MIT License
-Copyright (c) 2025
+Copyright (c) 2025 Serge Velbovets
 
 ---
 
-Enjoy your terminal-native Git activity graph — without leaving the shell.
-git-year keeps your development rhythm visible, simple, and elegant.
+Enjoy your terminal-native Git activity graph without leaving the shell — **git-year** keeps your development rhythm visible, simple, and elegant.
