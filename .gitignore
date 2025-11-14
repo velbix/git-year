@@ -1,1 +1,22 @@
+# Virtual environments
+.venv/
+venv/
+.env/
+
+# Byte-compiled / cache files
+__pycache__/
+*.pyc
+
+# OS / IDE files
 .DS_Store
+.idea/
+.vscode/
+
+# Logs
+logs/*.log
+logs/*.log.*
+logs/*.lock
+
+# Environment variables
+.env
+.env.local

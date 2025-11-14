@@ -1,0 +1,3 @@
+# Code formatters
+autopep8            # PEP 8 style guide
+isort               # Imports sorting
