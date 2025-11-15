@@ -57,6 +57,7 @@ S ||||||||||||||||||||||||||||||
 
 Show the installed version:
 ```
+git-year -V
 git-year --version
 ```
 

@@ -7,8 +7,11 @@ import os
 import subprocess
 import sys
 import textwrap
+from importlib import metadata
 from pathlib import Path
 from typing import Dict, List, Optional
+
+from git_year import __version__
 
 YELLOW = "\x1b[38;5;220m"   # bright yellow
 RESET = "\x1b[0m"
@@ -19,6 +22,10 @@ USAGE_WEEK_START = "Usage: git-year --week-start [Sunday|Monday]"
 DEFAULT_WEEK_START = "monday"  # keep it all lowercase
 MONDAY_ALIASES = {"m", "mo", "mon", "monday"}
 SUNDAY_ALIASES = {"s", "su", "sun", "sunday"}
+try:
+    DISTRIBUTION_VERSION = metadata.version("git-year")
+except metadata.PackageNotFoundError:
+    DISTRIBUTION_VERSION = __version__
 
 
 def run_git_log(start_date: dt.date, end_date: dt.date) -> Dict[dt.date, int]:
@@ -240,6 +247,13 @@ def main() -> None:
         "--week-start",
         type=str,
         help="Set the first day of the week (Sunday or Monday).",
+    )
+    parser.add_argument(
+        "-V",
+        "--version",
+        action="version",
+        version=f"git-year {DISTRIBUTION_VERSION}",
+        help="Show the installed git-year version.",
     )
     args = parser.parse_args()
 
