@@ -10,7 +10,7 @@ Perfect for developers who want a clean, unobtrusive activity overview directly 
 
 - **Shows the past year of commit activity** (today back to the same date last year) for the current Git repo  
 - **Jump to any calendar year** with `--year 2024` (auto-stops at today if the year is still in progress)  
-- **Choose Monday or Sunday as the calendar week start** (default: Monday) and keep the preference across reboots  
+- **Choose Sunday or Monday as the calendar week start** with `--week-start Monday` (default: Sunday) and keep the preference across reboots  
 - **Green intensity gradient** based on commit volume  
 - **Compact vertical bars (`|`)** instead of large squares — fits even tiny terminals  
 - **Zero dependencies** (pure Python + Git)  
@@ -41,16 +41,16 @@ git-year
 You’ll see a compact 7×52 bar heatmap covering the past year up to today:
 
 ```
+S ||||||||||||||||||||||||||||||
 M ||||||||||||||||||||||||||||||
 T ||||||||||||||||||||||||||||||
 W ||||||||||||||||||||||||||||||
 T ||||||||||||||||||||||||||||||
 F ||||||||||||||||||||||||||||||
 S ||||||||||||||||||||||||||||||
-S ||||||||||||||||||||||||||||||
 ```
 
-- Rows = weekdays (Mon–Sun)
+- Rows = weekdays (Sun-Sat)
 - Columns = weeks (52 total) covering the trailing year’s timeline (same date last year → today)
 - Color intensity = commit count
 - The current day label is highlighted in yellow
@@ -72,8 +72,8 @@ git-year --year 2024
 
 Choose the start of the week (case-insensitive, saved to `~/.config/git-year/config.toml` on Linux/macOS or `%APPDATA%\git-year\config.toml` on Windows):
 ```
-git-year --week-start sunday
-git-year --week-start Mon
+git-year --week-start Sunday (or S, Su, Sun)
+git-year --week-start Monday (or M, Mo, Mon)
 ```
 
 When you try to peek into a future year you’ll get a playful reminder:
