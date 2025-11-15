@@ -25,8 +25,13 @@ Perfect for developers who want a clean, unobtrusive activity overview directly 
 ## Installation
 
 ```
-bash
 pip install git-year
+```
+
+If pip is not installed – install it before:
+```
+python -m ensurepip --upgrade (Windows)
+python3 -m ensurepip --upgrade (macOS/Linux)
 ```
 
 ---
