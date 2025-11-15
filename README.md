@@ -10,6 +10,7 @@ Perfect for developers who want a clean, unobtrusive activity overview directly 
 
 - **Shows the past year of commit activity** (today back to the same date last year) for the current Git repo  
 - **Jump to any calendar year** with `--year 2024` (auto-stops at today if the year is still in progress)  
+- **Choose Monday or Sunday as the calendar week start** and keep the preference across reboots  
 - **Green intensity gradient** based on commit volume  
 - **Compact vertical bars (`|`)** instead of large squares — fits even tiny terminals  
 - **Zero dependencies** (pure Python + Git)  
@@ -62,6 +63,12 @@ git-year --version
 Focus on a specific calendar year (Jan 1 → Dec 31, or today if it’s still the current year):
 ```
 git-year --year 2024
+```
+
+Choose the start of the week (case-insensitive, saved to `~/.config/git-year/config.toml` on Linux/macOS or `%APPDATA%\git-year\config.toml` on Windows):
+```
+git-year --week-start sunday
+git-year --week-start Mon
 ```
 
 When you try to peek into a future year you’ll get a playful reminder:

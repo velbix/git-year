@@ -3,12 +3,20 @@ import argparse
 import calendar
 import collections
 import datetime as dt
+import os
 import subprocess
 import sys
-from typing import Dict, List
+from pathlib import Path
+from typing import Dict, List, Optional
 
 YELLOW = "\x1b[38;5;220m"   # bright yellow
 RESET = "\x1b[0m"
+
+USAGE_YEAR = "Usage: git-year --year [YEAR]"
+USAGE_WEEK_START = "Usage: git-year --week-start [Sunday|Monday]"
+
+MONDAY_ALIASES = {"m", "mo", "mon", "monday"}
+SUNDAY_ALIASES = {"s", "su", "sun", "sunday"}
 
 
 def run_git_log(start_date: dt.date, end_date: dt.date) -> Dict[dt.date, int]:
@@ -72,11 +80,15 @@ def choose_level(count: int, thresholds=(0, 1, 3, 6, 10)) -> int:
     return 4
 
 
-def print_heatmap(start_date: dt.date, end_date: dt.date, counts: Dict[dt.date, int]) -> None:
+def print_heatmap(start_date: dt.date, end_date: dt.date, counts: Dict[dt.date, int],
+                  week_start: str) -> None:
     all_days = build_date_range(start_date, end_date)
 
-    # Align start to Monday so columns are full weeks
-    offset = start_date.weekday()  # Monday = 0
+    # Align start to requested week start so columns are full weeks
+    if week_start == "monday":
+        offset = start_date.weekday()  # Monday = 0
+    else:  # sunday
+        offset = (start_date.weekday() + 1) % 7
     grid_start = start_date - dt.timedelta(days=offset)
 
     total_days = (end_date - grid_start).days + 1
@@ -101,7 +113,13 @@ def print_heatmap(start_date: dt.date, end_date: dt.date, counts: Dict[dt.date, 
 
     COLORS = [CELL_0, CELL_1, CELL_2, CELL_3, CELL_4]
 
-    labels = ["M", "T", "W", "T", "F", "S", "S"]
+    base_labels = ["M", "T", "W", "T", "F", "S", "S"]
+    if week_start == "sunday":
+        order = [6, 0, 1, 2, 3, 4, 5]
+        labels = ["S", "M", "T", "W", "T", "F", "S"]
+    else:
+        order = list(range(7))
+        labels = base_labels
 
     print(
         f"Git commit map from {start_date.isoformat()} to {end_date.isoformat()}\n")
@@ -109,8 +127,8 @@ def print_heatmap(start_date: dt.date, end_date: dt.date, counts: Dict[dt.date, 
     # Highlight current day label (yellow)
     today_wd = dt.date.today().weekday()  # Monday = 0 … Sunday = 6
 
-    for weekday in range(7):
-        label = labels[weekday]
+    for idx, weekday in enumerate(order):
+        label = labels[idx]
 
         # Colour the label if it's the current day
         if weekday == today_wd:
@@ -126,6 +144,61 @@ def print_heatmap(start_date: dt.date, end_date: dt.date, counts: Dict[dt.date, 
     print("")
 
 
+def config_file_path() -> Path:
+    if sys.platform.startswith("win"):
+        base = os.getenv("APPDATA")
+        if base:
+            base_path = Path(base)
+        else:
+            base_path = Path.home() / "AppData" / "Roaming"
+    else:
+        xdg = os.getenv("XDG_CONFIG_HOME")
+        if xdg:
+            base_path = Path(xdg)
+        else:
+            base_path = Path.home() / ".config"
+    return base_path / "git-year" / "config.toml"
+
+
+def load_week_start_preference() -> Optional[str]:
+    path = config_file_path()
+    if not path.exists():
+        return None
+    try:
+        text = path.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped.startswith("week_start"):
+            _, _, value = stripped.partition("=")
+            value = value.strip().strip('"').strip("'").lower()
+            if value in ("monday", "sunday"):
+                return value
+    return None
+
+
+def save_week_start_preference(value: str) -> None:
+    path = config_file_path()
+    try:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f'week_start = "{value}"\n', encoding="utf-8")
+    except OSError:
+        pass
+
+
+def normalize_week_start(value: str) -> str:
+    normalized = value.strip().lower()
+    if normalized in MONDAY_ALIASES:
+        return "monday"
+    if normalized in SUNDAY_ALIASES:
+        return "sunday"
+    print(USAGE_WEEK_START)
+    sys.exit(2)
+
+
 def one_year_ago(date: dt.date) -> dt.date:
     """Return the same month/day in the previous year (clamped for leap years)."""
     target_year = date.year - 1
@@ -135,10 +208,11 @@ def one_year_ago(date: dt.date) -> dt.date:
 
 
 class FriendlyArgumentParser(argparse.ArgumentParser):
-    """Custom parser that prints a concise usage hint on errors."""
+    """Custom parser that prints concise usage hints on errors."""
 
     def error(self, message):  # type: ignore[override]
-        print("Usage: git-year --year [YEAR]")
+        print(USAGE_YEAR)
+        print(USAGE_WEEK_START)
         sys.exit(2)
 
 
@@ -150,6 +224,11 @@ def main() -> None:
         "--year",
         type=str,
         help="Show activity for the specified calendar year (e.g. --year 2024).",
+    )
+    parser.add_argument(
+        "--week-start",
+        type=str,
+        help="Set the first day of the week (Sunday or Monday).",
     )
     args = parser.parse_args()
 
@@ -175,8 +254,15 @@ def main() -> None:
     else:
         start_date = one_year_ago(end_date)
 
+    saved_week_start = load_week_start_preference() or "monday"
+    if args.week_start is not None:
+        week_start = normalize_week_start(args.week_start)
+        save_week_start_preference(week_start)
+    else:
+        week_start = saved_week_start
+
     counts = run_git_log(start_date, end_date)
-    print_heatmap(start_date, end_date, counts)
+    print_heatmap(start_date, end_date, counts, week_start)
 
 
 if __name__ == "__main__":
