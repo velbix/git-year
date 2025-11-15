@@ -8,7 +8,8 @@ Perfect for developers who want a clean, unobtrusive activity overview directly 
 
 ## Features
 
-- **Shows 1 year of commit activity** for the current Git repo  
+- **Shows the past year of commit activity** (today back to the same date last year) for the current Git repo  
+- **Jump to any calendar year** with `--year 2024` (auto-stops at today if the year is still in progress)  
 - **Green intensity gradient** based on commit volume  
 - **Compact vertical bars (`|`)** instead of large squares — fits even tiny terminals  
 - **Zero dependencies** (pure Python + Git)  
@@ -31,12 +32,12 @@ pip install git-year
 
 ## Usage
 
-Sipmly run from inside a Git repository:
+Simply run from inside a Git repository:
 ```
 git-year
 ```
 
-You’ll see a compact 7×52 bar heatmap:
+You’ll see a compact 7×52 bar heatmap covering the past year up to today:
 
 ```
 M ||||||||||||||||||||||||||||||
@@ -49,13 +50,23 @@ S ||||||||||||||||||||||||||||||
 ```
 
 - Rows = weekdays (Mon–Sun)
-- Columns = weeks (52 total)
+- Columns = weeks (52 total) covering the trailing year’s timeline (same date last year → today)
 - Color intensity = commit count
 - The current day label is highlighted in yellow
 
 Show the installed version:
 ```
 git-year --version
+```
+
+Focus on a specific calendar year (Jan 1 → Dec 31, or today if it’s still the current year):
+```
+git-year --year 2024
+```
+
+When you try to peek into a future year you’ll get a playful reminder:
+```
+Trying to look into the future? ;)
 ```
 
 ---

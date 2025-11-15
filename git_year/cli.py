@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import calendar
 import collections
 import datetime as dt
 import subprocess
@@ -125,20 +126,54 @@ def print_heatmap(start_date: dt.date, end_date: dt.date, counts: Dict[dt.date, 
     print("")
 
 
+def one_year_ago(date: dt.date) -> dt.date:
+    """Return the same month/day in the previous year (clamped for leap years)."""
+    target_year = date.year - 1
+    last_day = calendar.monthrange(target_year, date.month)[1]
+    day = min(date.day, last_day)
+    return dt.date(target_year, date.month, day)
+
+
+class FriendlyArgumentParser(argparse.ArgumentParser):
+    """Custom parser that prints a concise usage hint on errors."""
+
+    def error(self, message):  # type: ignore[override]
+        print("Usage: git-year --year [YEAR]")
+        sys.exit(2)
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(
+    parser = FriendlyArgumentParser(
         description="Show a compact git-cal-style commit map for the current repo."
     )
     parser.add_argument(
-        "--weeks",
-        type=int,
-        default=52,
-        help="Number of weeks to show (default: 52). Reduce if your terminal is narrow.",
+        "--year",
+        type=str,
+        help="Show activity for the specified calendar year (e.g. --year 2024).",
     )
     args = parser.parse_args()
 
     end_date = dt.date.today()
-    start_date = end_date - dt.timedelta(weeks=args.weeks)
+    if args.year is not None:
+        try:
+            year = int(args.year)
+        except ValueError:
+            print("Please enter a valid year :)")
+            return
+        if year <= 0:
+            print("Please enter a valid year :)")
+            return
+        if year > end_date.year:
+            print("Trying to look into the future? ;)")
+            return
+        start_date = dt.date(year, 1, 1)
+        if year == end_date.year:
+            # show year-to-date when requesting the current year
+            end_date = dt.date.today()
+        else:
+            end_date = dt.date(year, 12, 31)
+    else:
+        start_date = one_year_ago(end_date)
 
     counts = run_git_log(start_date, end_date)
     print_heatmap(start_date, end_date, counts)
