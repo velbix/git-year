@@ -6,6 +6,7 @@ import datetime as dt
 import os
 import subprocess
 import sys
+import textwrap
 from pathlib import Path
 from typing import Dict, List, Optional
 
@@ -15,6 +16,7 @@ RESET = "\x1b[0m"
 USAGE_YEAR = "Usage: git-year --year [YEAR]"
 USAGE_WEEK_START = "Usage: git-year --week-start [Sunday|Monday]"
 
+DEFAULT_WEEK_START = "monday"  # keep it all lowercase
 MONDAY_ALIASES = {"m", "mo", "mon", "monday"}
 SUNDAY_ALIASES = {"s", "su", "sun", "sunday"}
 
@@ -218,7 +220,16 @@ class FriendlyArgumentParser(argparse.ArgumentParser):
 
 def main() -> None:
     parser = FriendlyArgumentParser(
-        description="Show a compact git-cal-style commit map for the current repo."
+        description="Display a year of commits in a compact GitHub-style heatmap in your terminal.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog=textwrap.dedent(
+            """\
+            Examples:
+              git-year
+              git-year --year 2022
+              git-year --week-start Monday
+            """
+        ),
     )
     parser.add_argument(
         "--year",
@@ -254,7 +265,7 @@ def main() -> None:
     else:
         start_date = one_year_ago(end_date)
 
-    saved_week_start = load_week_start_preference() or "monday"
+    saved_week_start = load_week_start_preference() or DEFAULT_WEEK_START
     if args.week_start is not None:
         week_start = normalize_week_start(args.week_start)
         save_week_start_preference(week_start)
