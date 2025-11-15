@@ -63,6 +63,7 @@ git-year --version
 
 Need a refresher on the available options?
 ```
+git-year -h
 git-year --help
 ```
 
