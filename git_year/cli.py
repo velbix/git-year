@@ -224,6 +224,10 @@ class FriendlyArgumentParser(argparse.ArgumentParser):
         print(USAGE_WEEK_START)
         sys.exit(2)
 
+    def print_help(self, file=None):  # type: ignore[override]
+        super().print_help(file)
+        print("")
+
 
 def main() -> None:
     parser = FriendlyArgumentParser(
@@ -235,6 +239,8 @@ def main() -> None:
               git-year
               git-year --year 2022
               git-year --week-start Monday
+
+            Source: https://github.com/velbix/git-year (contributions welcome!)
             """
         ),
     )
