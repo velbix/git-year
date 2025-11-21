@@ -220,8 +220,14 @@ class FriendlyArgumentParser(argparse.ArgumentParser):
     """Custom parser that prints concise usage hints on errors."""
 
     def error(self, message):  # type: ignore[override]
-        print(USAGE_YEAR)
-        print(USAGE_WEEK_START)
+        argv = sys.argv[1:]
+        if any(arg.startswith("--week-start") for arg in argv):
+            print(USAGE_WEEK_START)
+        elif any(arg.startswith("--year") for arg in argv):
+            print(USAGE_YEAR)
+        else:
+            print(USAGE_YEAR)
+            print(USAGE_WEEK_START)
         sys.exit(2)
 
     def print_help(self, file=None):  # type: ignore[override]
@@ -268,14 +274,14 @@ def main() -> None:
         try:
             year = int(args.year)
         except ValueError:
-            print("Please enter a valid year :)")
-            return
+            print(USAGE_YEAR)
+            sys.exit(2)
         if year <= 0:
-            print("Please enter a valid year :)")
-            return
+            print(USAGE_YEAR)
+            sys.exit(2)
         if year > end_date.year:
-            print("Trying to look into the future? ;)")
-            return
+            print("I bet you will be super productive that year! ;)")
+            sys.exit(2)
         start_date = dt.date(year, 1, 1)
         if year == end_date.year:
             # show year-to-date when requesting the current year
