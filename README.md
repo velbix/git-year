@@ -45,7 +45,7 @@ git-year
 # outputs a GitHub-style contribution heatmap (shown as vertical bars)
 ```
 
-You’ll see a compact 7×52 bar heatmap representing your activity for the past year up to today — displayed in dark mode with retro-style green bars highlighting your commit days.
+You’ll see a compact 7×52 bar heatmap representing your activity for the past year up to today, displayed in dark mode with retro-style green bars highlighting your commit days (the week can start on either Monday or Sunday).
 
 <p align="center">
   <img src="docs/assets/terminal_github_style_heatmap.png" width="460" alt="Terminal GitHub-style heatmap">
@@ -55,6 +55,19 @@ You’ll see a compact 7×52 bar heatmap representing your activity for the past
 - Columns = weeks (52 total) covering the trailing year’s timeline (same date last year → today)
 - Color intensity = commit count
 - The current day label is highlighted in yellow
+
+Choose the start of the week (case-insensitive, saved to `~/.config/git-year/config.toml` on Linux/macOS or `%APPDATA%\git-year\config.toml` on Windows):
+```
+git-year --week-start Sunday (or S, Su, Sun)
+git-year --week-start Monday (or M, Mo, Mon)
+```
+
+Focus on a specific calendar year (Jan 1 → Dec 31, or today if it’s still the current year):
+```
+git-year --year 2024
+```
+
+When you try to peek into a future year you’ll get a playful message ;)
 
 Show the installed version:
 ```
@@ -67,19 +80,6 @@ Need a refresher on the available options?
 git-year -h
 git-year --help
 ```
-
-Focus on a specific calendar year (Jan 1 → Dec 31, or today if it’s still the current year):
-```
-git-year --year 2024
-```
-
-Choose the start of the week (case-insensitive, saved to `~/.config/git-year/config.toml` on Linux/macOS or `%APPDATA%\git-year\config.toml` on Windows):
-```
-git-year --week-start Sunday (or S, Su, Sun)
-git-year --week-start Monday (or M, Mo, Mon)
-```
-
-When you try to peek into a future year you’ll get a playful message ;)
 
 ---
 
