@@ -1,23 +1,24 @@
 # git-year
 
-A compact terminal heatmap showing one **year** of Git commits — similar to GitHub’s contribution graph, but optimized for **small terminal windows** using **minimal vertical bars** instead of squares.
+A minimal and compact terminal heatmap that shows one full **year** of Git commits in a GitHub-style layout, using vertical bars instead of squares to fit comfortably in small terminal windows.
 
-Perfect for developers who want a clean, unobtrusive activity overview directly inside the terminal.
+This tool offers a clean, lightweight, zero-dependency CLI contribution calendar for developers who want a quick visual overview of their Git activity directly from the command line.
 
 ---
 
 ## Features
 
-- **Shows the past year of commit activity** (today back to the same date last year) for the current Git repo  
-- **Jump to any calendar year** with `--year 2024` (auto-stops at today if the year is still in progress)  
-- **Choose Sunday or Monday as the calendar week start** with `--week-start Monday` (default: Sunday) and keep the preference across reboots  
-- **Green intensity gradient** based on commit volume  
-- **Compact vertical bars (`|`)** instead of large squares — fits even tiny terminals  
-- **Zero dependencies** (pure Python + Git)  
-- **256-color ANSI output** with dark-mode-friendly palette  
-- **Highlights the current weekday**  
-- Works in **macOS, Linux, Windows Terminal, VS Code terminal, Git Bash**  
-- Graceful message if run outside a Git repo  
+- **Shows the past year of commit activity** (today back to the same date last year) for the current Git repo
+- **Similar to GitHub’s contribution graph**, but runs directly in your terminal
+- **Jump to any calendar year** with `--year 2024` (auto-stops at today if the year is still in progress)
+- **Choose Sunday or Monday as the calendar week start** with `--week-start Monday` (default: Sunday) and keep the preference across reboots
+- **Green intensity gradient** based on commit volume
+- **Compact vertical bars (`|`)** instead of large squares — fits even tiny terminals
+- **Zero dependencies** (pure Python + Git)
+- **256-color ANSI output** with dark-mode-friendly palette
+- **Highlights the current weekday**
+- Works in **macOS, Linux, Windows Terminal, VS Code terminal, Git Bash**
+- Graceful message if run outside a Git repo
 - Ready for PyPI (`pip install git-year`)
 
 ---
@@ -38,22 +39,15 @@ python3 -m ensurepip --upgrade (macOS/Linux)
 
 ## Usage
 
-Simply run from inside a Git repository:
-```
+Run `git-year` inside any Git repository to display a one-year contribution heatmap in your terminal.
+```bash
 git-year
+# outputs a GitHub-style contribution heatmap (shown as vertical bars)
 ```
 
 You’ll see a compact 7×52 bar heatmap representing your activity for the past year up to today — displayed in dark mode with retro-style green bars highlighting your commit days.
 
-```
-S ||||||||||||||||||||||||||||||
-M ||||||||||||||||||||||||||||||
-T ||||||||||||||||||||||||||||||
-W ||||||||||||||||||||||||||||||
-T ||||||||||||||||||||||||||||||
-F ||||||||||||||||||||||||||||||
-S ||||||||||||||||||||||||||||||
-```
+![Terminal GitHub-style heatmap](docs/assets/terminal_github_style_heatmap.png)
 
 - Rows = weekdays (Sun-Sat)
 - Columns = weeks (52 total) covering the trailing year’s timeline (same date last year → today)

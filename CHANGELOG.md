@@ -8,6 +8,10 @@ IMPORTANT: new features must be **visible in app** (if not – it's refactors)
 
 ---
 
+## [0.5.6] – 2025-11-20
+- added SEO friendly description
+
+
 ## [0.5.5] – 2025-11-20
 - fixed multiple errors messages for --year and --week-start flags
 - fixed future year funny message
