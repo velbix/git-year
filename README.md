@@ -43,7 +43,7 @@ Simply run from inside a Git repository:
 git-year
 ```
 
-You’ll see a compact 7×52 bar heatmap covering the past year up to today:
+You’ll see a compact 7×52 bar heatmap representing your activity for the past year up to today — displayed in dark mode with retro-style green bars highlighting your commit days.
 
 ```
 S ||||||||||||||||||||||||||||||
@@ -83,10 +83,7 @@ git-year --week-start Sunday (or S, Su, Sun)
 git-year --week-start Monday (or M, Mo, Mon)
 ```
 
-When you try to peek into a future year you’ll get a playful reminder:
-```
-Trying to look into the future? ;)
-```
+When you try to peek into a future year you’ll get a playful message ;)
 
 ---
 
