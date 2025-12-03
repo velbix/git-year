@@ -26,6 +26,8 @@ A clean and lightweight CLI contribution calendar for developers who want a quic
 
 ```
 pipx install git-year
+or
+pip install --user git-year
 ```
 
 If pipx is not installed – install it before:
