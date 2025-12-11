@@ -32,18 +32,11 @@ or
 uv tool install git-year
 ```
 
-If pipx is not installed – install it before:
-```
-# macOS / Linux
-python3 -m pip install --user pipx
-python3 -m pipx ensurepath
+[How to install pipx?](https://pipx.pypa.io/stable/installation/) (Python cli tool installer)
 
-# Windows
-py -m pip install --user pipx
-py -m pipx ensurepath
-```
+[How to install pip?](https://pip.pypa.io/en/stable/installation/) (Python package manager)
 
-If uv (modern package manager) is not installed - here's the official [installation page](https://docs.astral.sh/uv/getting-started/installation/).
+[How to install uv?](https://docs.astral.sh/uv/getting-started/installation/) (modern Python package manager)
 
 ---
 
