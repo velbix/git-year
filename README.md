@@ -28,6 +28,8 @@ A clean and lightweight CLI contribution calendar for developers who want a quic
 pipx install git-year
 or
 pip install --user git-year
+or
+uv tool install git-year
 ```
 
 If pipx is not installed – install it before:
@@ -40,6 +42,8 @@ python3 -m pipx ensurepath
 py -m pip install --user pipx
 py -m pipx ensurepath
 ```
+
+If uv (modern package manager) is not installed - here's the official [installation page](https://docs.astral.sh/uv/getting-started/installation/).
 
 ---
 
