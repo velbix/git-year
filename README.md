@@ -54,7 +54,7 @@ git-year
 You’ll see a compact 7×52 bar heatmap representing your activity for the past year up to today, displayed in dark mode with retro-style green bars highlighting your commit days:
 
 <p align="center">
-  <img src="docs/assets/terminal_github_style_heatmap.png" width="460" alt="Terminal GitHub-style heatmap">
+  <img src="docs/assets/terminal_github_style_heatmap_v2.png" width="460" alt="Terminal GitHub-style heatmap">
 </p>
 
 - Columns = weeks (52 total)
